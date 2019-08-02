@@ -20,8 +20,15 @@ class Student
 
   def self.find_by_name(name)
     sql = <<-SQL
-    
+    SELECT *
+    FROM student
+    WHERE name = ?
+    LIMIT 1
     SQL
+
+    DB[:conn].execute(sql,name).map do |x|
+      x.new_from_db
+    end.first
   end
 
   def save
